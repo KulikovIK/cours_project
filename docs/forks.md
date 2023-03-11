@@ -25,8 +25,8 @@
     ```https://github.com/vakhnin/cours_project/pulls```
 
     жмем зеленую кнопку New pull request
-8. Видим предложение создать межрепозитаротный PR
-![](https://github.com/vakhnin/cours_project/blob/main/docs/img/img.png?raw=true). 
+8. Видим предложение создать межрепозитарный PR
+![](https://github.com/vakhnin/cours_project/blob/main/docs/img/img.png?raw=true) 
 Справа репозитарий откуда (Ваш репозитарий), слева куда (основной репозитарий проекта)
 Если предложения создания межрепозитарного PR не появляется, 
 жмем ссылку "compare across forks"
