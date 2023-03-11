@@ -22,6 +22,7 @@
 5. Делаем commit (не забываем убрать лишнее в gitignore)
 6. Делаем push локальной копии проекта в свой репозитарий
 7. В своем репозитарии в проекте на вкладке Pull request (далее сокращение PR)
+
     ```https://github.com/vakhnin/cours_project/pulls```
 
     жмем зеленую кнопку New pull request
