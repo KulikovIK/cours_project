@@ -40,8 +40,7 @@ INSTALLED_APPS = [
     'apiapp.apps.ApiappConfig',
     'authapp.apps.AuthappConfig',
     'mainapp.apps.MainappConfig',
-    
-    
+    'authnapp'
 ]
 
 MIDDLEWARE = [
@@ -104,6 +103,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+AUTH_USER_MODEL = 'authnapp.ShopUser' # не удалять
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.1/topics/i18n/
