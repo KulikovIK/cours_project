@@ -1,3 +1,8 @@
+<<<<<<< HEAD
+from django.db import models
+
+# Create your models here.
+=======
 # from django.contrib.auth.models import AbstractUser
 from django.db import models
 
@@ -94,3 +99,4 @@ class Feedback(DataTimeModel):
         return f'Отзыв на {self.idea} от {self.username}'
 
 # class Rubrics()
+>>>>>>> 83659ce (в mainapp\models.py продолжилжение кода Бориса.)
