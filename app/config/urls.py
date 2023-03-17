@@ -6,8 +6,9 @@ app_name = 'config'
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path("", RedirectView.as_view(url="backend/")),
-    path("frontend/", include("frontend.urls", namespace='frontend')),
-    path("backend/", include("backend.urls", namespace='backend')),
-    path("authapp/", include("authapp.urls", namespace='authapp')),
+    path("", RedirectView.as_view(url="mainapp/")),
+    path("mainapp/", include("mainapp.urls", namespace='mainapp')),
+    path("authn/", include("authnapp.urls", namespace='auth')),
+    path("apiapp/", include("apiapp.urls", namespace='apiapp')),
+    
 ]
