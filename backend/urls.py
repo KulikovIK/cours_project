@@ -12,7 +12,7 @@ router = DefaultRouter()
 router.register(r'idea', IdeaModelViewSet, basename='idea')
 
 urlpatterns = [
-    path("index/", backend.main, name="index"),
+    path("", backend.main, name="index"),
     path("search/", backend.search, name="search"),
     path("my_ideas/", backend.my_ideas, name="my_ideas"),
     path("idea_add/", backend.idea_add, name="idea_add"),
