@@ -39,7 +39,7 @@ def main(request):  # список всех идей.
     title = "Идеи"
 
     ideas = Idea.objects.all()
-
+    
     content = {"title": title, "ideas": ideas, "media_url": settings.MEDIA_URL}
 
     return render(request, "backend/index.html", content)
