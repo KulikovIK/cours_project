@@ -83,7 +83,7 @@ class JoinedUsers(DataTimeModel):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="likes")
 
     def __str__(self) -> str:
-        return f'{self.user.username} присоединился к {self.idea.idea.title}'
+        return f'{self.user.username} присоединился к {self.idea.title}'
 
 
 class Meta:
