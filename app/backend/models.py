@@ -1,7 +1,6 @@
 from django.db import models
 from django.conf import settings
 
-
 """ Дата создания/изменения/удаления"""
 
 
@@ -33,11 +32,11 @@ class Idea(DataTimeModel):
     objects = ObjectsManager()
     autor = models.CharField(verbose_name='Никнейм', max_length=22)
     title = models.CharField(verbose_name='Заголовок', max_length=255)
-    rubrics = models.CharField(verbose_name='Рубрика', max_length=255)  # тут надо подумать
+    rubrics = models.CharField(verbose_name='Рубрика', max_length=255)
     preview = models.CharField(verbose_name='Описание', max_length=1000)
     body = models.TextField(verbose_name='Содержание')
 
-    body_as_markdown = models.BooleanField(verbose_name='Тип Идеи',  # тут не понял что это :(
+    body_as_markdown = models.BooleanField(verbose_name='Тип Идеи',
                                            default=False)
 
     def __str__(self) -> str:
@@ -87,4 +86,16 @@ class JoinedUsers(DataTimeModel):
         return f'{self.user.username} присоединился к {self.idea.idea.title}'
 
 
-#class Rubrics()
+class Meta:
+    verbose_name = 'Рубрика'
+    verbose_name_plural = 'Рубрики'
+    ordering = DataTimeModel.Meta.ordering
+
+
+class Rubrics(DataTimeModel):
+    rub_title = models.ForeignKey(Idea, verbose_name='Заголовок', on_delete=models.CASCADE)
+    rub_rubrics = models.ForeignKey(Idea, verbose_name='Рубрика', on_delete=models.CASCADE)
+    rub_preview = models.ForeignKey(Idea, verbose_name='Описание', on_delete=models.CASCADE)
+
+    def __str__(self) -> str:
+        return f'{self.idea.title} {self.idea.rubrics} {self.idea.preview}'
