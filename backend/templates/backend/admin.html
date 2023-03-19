@@ -55,6 +55,17 @@
                     </ul>
                 </nav>
 
+                <!-- тестовая версия формы создания идей -->
+
+                <form method="post" action="{% url 'backend:idea_add' %}">
+                    {% csrf_token %}
+                    <textarea name="title" placeholder="title"></textarea>
+                    <textarea name="rubrics" placeholder="rubrics"></textarea>
+                    <textarea name="preview" placeholder="preview"></textarea>
+                    <textarea name="body" placeholder="body"></textarea>
+                    <button style="width:100px;height: 50px;" type="submit">создать</button>
+                </form>
+
                 {% for item in ideas.values %}
 
                 <div class="card mb-3" style="min-height: 166px; min-width: 380px;">

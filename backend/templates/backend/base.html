@@ -97,9 +97,11 @@
                 let feedback_form = feedback_button[i].parentNode.parentNode.parentNode.parentNode.
                 parentNode.parentNode.childNodes[9]
                 feedback_form.style.opacity = 1
+
+                <!-- нужно для того, чтобы форма добавления отзыва не загорадивалась списком отзывов -->
+                feedback_form.style.zIndex = 1000
             }
         }
-
 
     </script>
 

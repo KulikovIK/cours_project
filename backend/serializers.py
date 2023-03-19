@@ -1,5 +1,5 @@
 from rest_framework.serializers import HyperlinkedModelSerializer
-from .models import Idea, Feedback, JoinedUsers
+from .models import Idea, Feedback, JoinedUsers, LikesToIdeas
 
 
 class IdeaModelSerializer(HyperlinkedModelSerializer):
@@ -20,3 +20,7 @@ class JoinedUsersModelSerializer(HyperlinkedModelSerializer):
         fields = '__all__'
 
 
+class LikesToIdeasModelSerializer(HyperlinkedModelSerializer):
+    class Meta:
+        model = LikesToIdeas
+        fields = '__all__'

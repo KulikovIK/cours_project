@@ -52,7 +52,7 @@
                     <button style="width:100px;height: 50px;" type="submit">создать</button>
                 </form>
 
-                {% for idea in ideas %}
+                {% for item in ideas.values %}
 
                 <div class="card mb-3" style="min-height: 166px; min-width: 380px;">
                     <div class="card-body">
@@ -60,6 +60,9 @@
                         <div class="row g-3 justify-content-left">
 
                             <div class="col-sm-2 card-image d-none d-md-block my-auto">
+                                <!-- {% if request.user.avatar %}
+                                <img src="{{ request.user.avatar }}" class="img-fluid rounded-circle" alt="Card title">
+                                {% else %} {% endif %} -->
                                 <img src="https://img.freepik.com/free-vector/mysterious-mafia-man-smoking-cigarette_52683-34828.jpg?w=826&t=st=1678618018~exp=1678618618~hmac=ea416d598467ae43cc431081515e0bb0a25e41cb22385a045ec12ca347842f9a"
                                     class="img-fluid rounded-circle" alt="Card title">
                             </div>
@@ -68,13 +71,13 @@
 
                                 <div class="container">
                                     <div class="row justify-content-center align-items-center g-2">
-                                        <h4 class="card-title text-center"><strong>{{ idea.title }}</strong></h4>
+                                        <h4 class="card-title text-center"><strong>{{ item.idea.title }}</strong></h4>
                                     </div>
 
                                     <div class="row g-1">
 
                                         <div class="col-4 my-auto">
-                                            <a class="nameLink" href="#">{{ idea.autor }}</a>
+                                            <a class="nameLink" href="#">{{ item.idea.autor }}</a>
                                         </div>
 
                                         <div class="col my-auto">
@@ -91,14 +94,27 @@
                                         <div class="row justify-content-center align-items-center g-2">
                                             <div class="col">
                                                 <p class="card-text">Описание</p>
-                                                <p>{{ idea.preview }}</p>
+                                                <p>{{ item.idea.preview }}</p>
                                                 <p class="card-text">
-                                                    <small class="text-muted">Опубликовано {{ idea.created_at }}</small>
+                                                    <small class="text-muted">Опубликовано {{ item.idea.created_at }}</small>
                                                 </p>
                                             </div>
                                         </div>
 
-                                            <a href="{% url 'backend:idea_delete' idea.pk %}">удалить</a>
+                                        {% if user.is_superuser %}
+                                            <a href="{% url 'backend:idea_delete' item.idea.pk %}">удалить</a>
+                                        {% endif %}
+
+                                        <div class="feedback_list" style="width: 100%;display: inline;z-index: 100;">
+                                            {% for feedback in item.feedback %}
+                                            <div>
+                                                <img src="" alt="">
+                                                <div>Оценка: {{ feedback.rating }}</div>
+                                                <div>Отзыв: {{ feedback.feedback }}</div>
+                                                <a href="{% url 'backend:feedback_delete' feedback.pk %}">удалить</a>
+                                            </div>
+                                            {% endfor %}
+                                        </div>
 
                                     </div>
                                 </div>
@@ -113,13 +129,13 @@
                                                 <!-- id="feedback" нужен для определения элемента в js -->
                                                 <button class="nav-link feedback" href=""><img class="service-img"
                                                         src="https://cdn-icons-png.flaticon.com/128/134/134808.png">
-                                                    </button>
+                                                </button>
                                             </div>
                                         </div>
 
                                         <div class="col">
                                             <div class="serviceButton">
-                                                <a class="nav-link " href="{% url 'backend:like_add' idea.pk %}"><img class="service-img"
+                                                <a class="nav-link " href="{% url 'backend:like_add' item.idea.pk %}"><img class="service-img"
                                                         src="https://cdn-icons-png.flaticon.com/128/1077/1077035.png">
                                                 </a>
                                             </div>
@@ -131,7 +147,7 @@
 
                             <!-- форма тестовая без дизайна, но работает -->
 
-                            <form id="feedback_form" method="post" action="{% url 'backend:feedback_add' idea.pk %}" 
+                            <form id="feedback_form" method="post" action="{% url 'backend:feedback_add' item.idea.pk %}" 
                             style="position: absolute;bottom:0;width: 100%;opacity: 0;">
                                 {% csrf_token %}
                                 <div class="rating-area">

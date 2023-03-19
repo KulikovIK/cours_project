@@ -3,7 +3,7 @@ from django.conf import settings
 from django.shortcuts import HttpResponseRedirect, render
 from rest_framework.viewsets import ModelViewSet
 from .models import Idea, Feedback, JoinedUsers, LikesToIdeas
-from .serializers import IdeaModelSerializer, FeedbackModelSerializer, JoinedUsersModelSerializer
+from .serializers import IdeaModelSerializer, FeedbackModelSerializer, JoinedUsersModelSerializer, LikesToIdeasModelSerializer
 from rest_framework.permissions import IsAuthenticated, BasePermission
 from rest_framework.views import APIView
 
@@ -32,34 +32,75 @@ class JoinedUsersModelViewSet(ModelViewSet):
     serializer_class = JoinedUsersModelSerializer
 
 
+class JoinedUsersModelViewSet(ModelViewSet):
+    queryset = JoinedUsers.objects.all()
+    serializer_class = JoinedUsersModelSerializer
+
+
+class LikesToIdeasModelViewSet(ModelViewSet):
+    queryset = LikesToIdeas.objects.all()
+    serializer_class = LikesToIdeasModelSerializer
+
+
+def GenIdeasList(ideas):
+    
+    # генератор списка идей.
+    # создаёт словарь, в котором ключ это порядковое число, а значение это словарь с отзывами и идеями
+    # возвращает словарь со со всеми отзывами и идями
+    # в html прогоняется циклом for item in ideas.values
+    # в нём идеи вызываются так: item.idea, а отызывы так: item.feedback
+
+    sl_ideas = {}
+    a = 0
+    for idea in ideas:
+        a += 1
+        sl_ideas[a] = {"feedback": Feedback.objects.filter(idea=idea), "idea": idea}
+
+    return sl_ideas
+
+
 """ идеи. добавление, удаление, изменение """
 
 
 def main(request):  # список всех идей.
     title = "Идеи"
 
-    ideas = Idea.objects.all()
-    
+    ideas = GenIdeasList(Idea.objects.all())
+
     content = {"title": title, "ideas": ideas, "media_url": settings.MEDIA_URL}
 
     return render(request, "backend/index.html", content)
+ 
+
+
+""" админка """
+
+def admin(request):
+    title = "Админка"
+    
+    ideas = GenIdeasList(Idea.objects.all())
+
+    content = {"title": title, "ideas": ideas, "media_url": settings.MEDIA_URL}
+
+    return render(request, "backend/admin.html", content)
+
 
 
 def search(request):
     if request.method == 'POST':
+
         title = "Поиск"
         name = request.POST['search']
 
-        print(name)
-
         ideas = Idea.objects.all()
         ideas_list = []
-
         for idea in ideas:
             if name in idea.title:
                 ideas_list.append(idea)
 
-        content = {"title": title, "ideas": ideas_list}
+        ideas_sl = GenIdeasList(ideas_list)
+
+        content = {"title": title, "ideas": ideas_sl, "media_url": settings.MEDIA_URL}
 
         return render(request, "backend/index.html", content)
 
@@ -68,7 +109,9 @@ def search(request):
 
 def my_ideas(request):
     title = "Профиль"
-    ideas = Idea.objects.filter(autor=request.user.username)
+    autor = request.user.username
+
+    ideas = GenIdeasList(Idea.objects.filter(autor=autor))
 
     content = {"title": title, "ideas": ideas, "media_url": settings.MEDIA_URL}
 
