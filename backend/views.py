@@ -86,6 +86,8 @@ def admin(request):
     return render(request, "backend/admin.html", content)
 
 
+""" поисковик """
+
 
 def search(request):
     if request.method == 'POST':
@@ -106,6 +108,9 @@ def search(request):
         return render(request, "backend/index.html", content)
 
     return HttpResponseRedirect(request.META.get("HTTP_REFERER"))
+
+
+""" идеи """
 
 
 def my_ideas(request):
