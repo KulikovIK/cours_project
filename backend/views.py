@@ -59,7 +59,7 @@ def GenIdeasList(ideas):
     return sl_ideas
 
 
-""" идеи. добавление, удаление, изменение """
+""" главная """
 
 
 def main(request):  # список всех идей.
