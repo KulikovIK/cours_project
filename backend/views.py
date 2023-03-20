@@ -130,9 +130,14 @@ def idea_add(request):  # добавление идеи через форму
         username = request.user.username
 
         title = request.POST['title']
-        rubrics = request.POST['rubrics']
         preview = request.POST['preview']
         body = request.POST['body']
+
+        try:
+            rubrics = request.POST['rubrics']
+        except:
+            rubrics = "Python"
+
         if title and rubrics and preview and body:  # проверка наличия данных во всех полях
 
             new_idea = Idea.objects.create(autor=username, title=title, rubrics=rubrics,
@@ -150,11 +155,24 @@ def idea_card(request, pk): # карта идеи
     feedbacks = Feedback.objects.filter(idea=idea)
     joined_users = JoinedUsers.objects.filter(idea=idea)
     likes = LikesToIdeas.objects.filter(idea=idea)
+    print(pk, idea, Idea.objects.all())
 
     content = {"title": title, "idea": idea, "feedbacks": feedbacks, "joined_users": joined_users, 
                "likes": likes, "media_url": settings.MEDIA_URL}
 
     return render(request, "backend/idea_card.html", content)
+
+
+def idea_card_delete(request, pk):  # удаление идеи при нажатии на кнопку
+
+    title = "Идеи"
+    ideas = GenIdeasList(Idea.objects.all())
+
+    idea = Idea.objects.filter(pk=pk)
+    idea.delete()
+
+    content = {"title": title, "ideas": ideas, "media_url": settings.MEDIA_URL}
+    return render(request, "backend/index.html", content)
 
 
 def idea_edit(request, pk):  # изменение идеи через форму
