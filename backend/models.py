@@ -84,7 +84,7 @@ class JoinedUsers(DataTimeModel):
     autor = models.CharField(verbose_name='Никнейм', max_length=22, default="")
 
     def __str__(self) -> str:
-        return f'{self.autor} присоединился к {self.idea.idea.title}'
+        return f'{self.autor} присоединился к {self.idea.title}'
 
 
 class LikesToIdeas(DataTimeModel):
@@ -95,4 +95,11 @@ class LikesToIdeas(DataTimeModel):
         return f'{self.autor} поставил лайк на {self.idea.title}'
 
 
-#class Rubrics()
+""" рубрики """
+
+
+class Rubrics():
+    idea = models.ForeignKey(Idea, on_delete=models.CASCADE, verbose_name='Идея')
+
+    def __str__(self) -> str:
+        return f'{self.idea.title}, {self.idea.rubrics}. {self.idea.rubrics}'

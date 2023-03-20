@@ -84,6 +84,13 @@
                             <div class="col" style="min-width: 340px;">
 
                                 <div class="container">
+                                    
+                                    {% if user.is_authenticated %}
+                                        <a href="{% url 'backend:idea_card' item.idea.pk %}">страница идеи</a>
+                                    {% else %}
+                                        <a href="{% url 'authapp:login' %}">страница идеи</a>
+                                    {% endif %}
+
                                     <div class="row justify-content-center align-items-center g-2">
                                         <h4 class="card-title text-center"><strong>{{ item.idea.title }}</strong></h4>
                                     </div>

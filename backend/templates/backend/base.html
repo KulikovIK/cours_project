@@ -63,7 +63,7 @@
                 </form>
 
                 {% if user.is_superuser %}
-                    <li style="list-style-type: none;"><a class="dropdown-item" href="#">Админка</a></li>
+                    <li style="list-style-type: none;"><a class="dropdown-item" href="{% url 'backend:admin' %}">Админка</a></li>
                 {% endif %}
 
                 <!-- Кнопка входа в систему (модальное окно) -->
@@ -96,10 +96,7 @@
             feedback_button[i].onclick = function(el){
                 let feedback_form = feedback_button[i].parentNode.parentNode.parentNode.parentNode.
                 parentNode.parentNode.childNodes[9]
-                feedback_form.style.opacity = 1
-
-                <!-- нужно для того, чтобы форма добавления отзыва не загорадивалась списком отзывов -->
-                feedback_form.style.zIndex = 1000
+                feedback_form.style.display = "block"
             }
         }
 

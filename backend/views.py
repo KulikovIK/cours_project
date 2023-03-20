@@ -5,7 +5,7 @@ from rest_framework.viewsets import ModelViewSet
 from .models import Idea, Feedback, JoinedUsers, LikesToIdeas
 from .serializers import IdeaModelSerializer, FeedbackModelSerializer, JoinedUsersModelSerializer, LikesToIdeasModelSerializer
 from rest_framework.permissions import IsAuthenticated, BasePermission
-from rest_framework.views import APIView
+from django.contrib.auth.decorators import user_passes_test
 
 
 class Temp(TemplateView):
@@ -75,6 +75,7 @@ def main(request):  # список всех идей.
 
 """ админка """
 
+@user_passes_test(lambda u: u.is_superuser)
 def admin(request):
     title = "Админка"
     
@@ -136,6 +137,19 @@ def idea_add(request):  # добавление идеи через форму
         return HttpResponseRedirect(request.META.get("HTTP_REFERER"))
 
     return HttpResponseRedirect(request.META.get("HTTP_REFERER"))
+
+
+def idea_card(request, pk): # карта идеи
+    title = "Идея"
+    idea = Idea.objects.filter(pk=pk).first()
+    feedbacks = Feedback.objects.filter(idea=idea)
+    joined_users = JoinedUsers.objects.filter(idea=idea)
+    likes = LikesToIdeas.objects.filter(idea=idea)
+
+    content = {"title": title, "idea": idea, "feedbacks": feedbacks, "joined_users": joined_users, 
+               "likes": likes, "media_url": settings.MEDIA_URL}
+
+    return render(request, "backend/idea_card.html", content)
 
 
 def idea_edit(request, pk):  # изменение идеи через форму
@@ -241,7 +255,7 @@ def joined_user_add(request, pk):  # добавление пользовател
 def joined_user_delete(request, pk):  # удаление пользователя из проекта при нажатии на кнопку
 
     idea = Feedback.objects.filter(pk=pk).first()
-    autor = request.user.nickname
+    autor = request.user.username
 
     joined_user = JoinedUsers.objects.filter(idea=idea, autor=autor).first()
     joined_user.delete()
@@ -255,11 +269,10 @@ def joined_user_delete(request, pk):  # удаление пользовател�
 def like_add(request, pk): # добавление лайка на проект через кнопку
 
     idea = Idea.objects.filter(pk=pk).first()
-    autor = request.user.nickname
+    autor = request.user.username
 
     new_like = LikesToIdeas.objects.create(idea=idea, autor=autor)
     new_like.save()
-    print(new_like)
 
     return HttpResponseRedirect(request.META.get("HTTP_REFERER"))
 
