@@ -13,8 +13,10 @@ router.register(r'idea', IdeaModelViewSet, basename='idea')
 
 urlpatterns = [
     path("", backend.main, name="index"),
-    path("admin/", backend.admin, name="admin"),
     path("idea_card/<int:pk>/", backend.idea_card, name="idea_card"),
+    path("lk/", backend.lk, name="lk"),
+    path("lk_edit/", backend.lk_edit, name="lk_edit"),
+    path("admin/", backend.admin, name="admin"),
     path("search/", backend.search, name="search"),
     path("my_ideas/", backend.my_ideas, name="my_ideas"),
     path("idea_add/", backend.idea_add, name="idea_add"),

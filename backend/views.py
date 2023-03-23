@@ -3,6 +3,7 @@ from django.conf import settings
 from django.shortcuts import HttpResponseRedirect, render
 from rest_framework.viewsets import ModelViewSet
 from .models import Idea, Feedback, JoinedUsers, LikesToIdeas
+from authapp.models import BaseIdeinerUser
 from .serializers import IdeaModelSerializer, FeedbackModelSerializer, JoinedUsersModelSerializer, LikesToIdeasModelSerializer
 from rest_framework.permissions import IsAuthenticated, BasePermission
 from django.contrib.auth.decorators import user_passes_test
@@ -57,6 +58,39 @@ def GenIdeasList(ideas):
         sl_ideas[a] = {"feedback": Feedback.objects.filter(idea=idea), "idea": idea}
 
     return sl_ideas
+
+
+""" Личный кабинет """
+
+def lk(request):  # профиль
+
+    title = "Профиль"
+
+    content = {"title": title, "media_url": settings.MEDIA_URL}
+
+    return render(request, "backend/lk.html", content)
+
+
+def lk_edit(request):  # изменение профиля через форму
+
+    if request.method == 'POST':
+
+        nickname = request.user.nickname
+        user = BaseIdeinerUser.objects.filter(nickname=nickname).first()
+
+        if request.POST['nickname']: user.nickname = request.POST['nickname']
+        if request.POST['username']: user.username = request.POST['username']
+        if request.POST['surname']: user.surname = request.POST['surname']
+        if request.POST['email']: user.email = request.POST['email']
+        if request.POST['age']: user.age = request.POST['age']
+
+        user.save()
+
+        print(request.POST['nickname'], request.user.nickname, bool(request.POST['nickname']))
+
+        return HttpResponseRedirect(request.META.get("HTTP_REFERER"))
+
+    return HttpResponseRedirect(request.META.get("HTTP_REFERER"))
 
 
 """ главная """
@@ -114,7 +148,7 @@ def search(request):
 
 
 def my_ideas(request):
-    title = "Профиль"
+    title = "Мои идели"
     autor = request.user.username
 
     ideas = GenIdeasList(Idea.objects.filter(autor=autor))
