@@ -1,12 +1,14 @@
-from django.urls import path
+from django.urls import include, path
+from rest_framework import routers
 from frontend import views
-from django.views.generic import RedirectView
+
+router = routers.DefaultRouter()
+router.register(r'users', views.IdeaViewSet)
 
 app_name = 'frontend'
 
 urlpatterns = [
-    path("", RedirectView.as_view(url="index/")),
-    path("index/", views.Temp.as_view(), name="index"),
+    path('', include(router.urls)),
+    path('api-auth/', include('rest_framework.urls', namespace='rest_framework'))
 
-
-    ]
+]

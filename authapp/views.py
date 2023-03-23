@@ -38,7 +38,7 @@ def register(request):
 
     if request.method == "POST":
         register_form = BaseIdeinerUserRegisterForm(request.POST, request.FILES)
-
+        
         if register_form.is_valid():
             register_form.save()
             return HttpResponseRedirect(reverse("authapp:login"))

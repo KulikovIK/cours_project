@@ -1,4 +1,11 @@
-from django.views.generic import TemplateView
+from backend.models import Idea
+from rest_framework import viewsets
+from rest_framework import permissions
+from frontend.serializers import IdeaSerializer
 
-class Temp(TemplateView):
-    template_name = 'frontend/index.html'
+class IdeaViewSet(viewsets.ModelViewSet):
+    queryset = Idea.objects.all()
+    serializer_class = IdeaSerializer
+    # permission_classes = [permissions.IsAuthenticated]
+
+

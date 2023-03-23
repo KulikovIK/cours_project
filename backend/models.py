@@ -1,5 +1,5 @@
 from django.db import models
-from django.conf import settings
+
 
 
 """ Дата создания/изменения/удаления"""
@@ -36,9 +36,6 @@ class Idea(DataTimeModel):
     rubrics = models.CharField(verbose_name='Рубрика', max_length=255)  # тут надо подумать
     preview = models.CharField(verbose_name='Описание', max_length=1000)
     body = models.TextField(verbose_name='Содержание')
-
-    body_as_markdown = models.BooleanField(verbose_name='Тип Идеи',  # тут не понял что это :(
-                                           default=False)
 
     def __str__(self) -> str:
         return f'{self.autor} {self.title} {self.rubrics}'
