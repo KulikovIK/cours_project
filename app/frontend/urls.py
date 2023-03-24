@@ -3,12 +3,12 @@ from rest_framework import routers
 from frontend import views
 
 router = routers.DefaultRouter()
-router.register(r'users', views.IdeaViewSet)
+router.register(r'ideas', views.IdeaViewSet)
+router.register(r'jusers', views.JoinedUsersViewSet)
+router.register(r'likes', views.LikesViewSet)
 
 app_name = 'frontend'
 
 urlpatterns = [
-    path('', include(router.urls)),
-    path('api-auth/', include('rest_framework.urls', namespace='rest_framework'))
-
+    path('', include(router.urls), name='api'),
 ]
