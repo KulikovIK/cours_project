@@ -5,10 +5,10 @@ import Idea from "./Idea"
 function Body() {
 
     return (
-        <div class="container-md mt-5 idea-list">
-            <div class="row justify-content-center align-items-top">
+        <div className="container-md mt-5 idea-list">
+            <div className="row justify-content-center align-items-top">
             <Filter/>
-                <div class="col">
+                <div className="col">
                     <Idea/>
                 </div>
             </div>
