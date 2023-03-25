@@ -1,4 +1,5 @@
 import React from "react"
+import { Button } from "../components/Button"
 
 function Title() {
 
@@ -26,21 +27,17 @@ function Title() {
                     <a className="nav-link " href="#" src="">Wiki</a>
                 </li>
                 <li className="nav-item">
-                    <a className="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Выход</a>
+                    <a className="nav-link disabled" href="#" tabIndex="-1" aria-disabled="true">Выход</a>
                 </li>
             </ul>
 
 
             <form className="d-flex">
                 <input className="form-control mr-2" type="search" placeholder="Search" aria-label="Search"></input>
-
-                <button className="btn mainButton" type="submit">Поиск</button>
+                <Button params={{text:"Поиск", type:"submit", styles:"mainButton"}}/>
             </form>
 
-
-            <button type="button" className="btn mainButton" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                Войти в систему
-            </button>
+            <Button params={{text:"Войти в систему", type:"button", styles:"mainButton"}}/>
 
         </div>
         </nav>

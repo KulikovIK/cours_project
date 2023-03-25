@@ -1,17 +1,18 @@
 import React from "react"
+import { Button } from "../components/Button";
 import Rudiobutton from "./Rudiobutton"
 
 function Title() {
 
     return (
 
-        <div class="col-md-3 d-none d-md-block">
+        <div className="col-md-3 d-none d-md-block">
             <h3>Фильтр</h3>
-            <form class="row g-3">
-                <div class="col">
+            <form className="row g-3">
+                <div className="col">
                     <Rudiobutton value='Python'/>
                     <Rudiobutton value='JavaScript'/>
-                    <button type="submit" class="btn mainButton mb-3">Фильтровать</button>
+                    <Button params={{text:"Фильтровать", type:"submit", styles:"mainButton"}}/>
                 </div>
             </form>
 
@@ -19,4 +20,4 @@ function Title() {
         )
     }
 
-export default Title
+export default Title;
