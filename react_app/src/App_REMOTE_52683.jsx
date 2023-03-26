@@ -1,9 +1,3 @@
-<<<<<<< HEAD
-import './styles/bootstrap.min.css'
-import './styles/styles.css'
-import Title from './UI/Title'
-import Body from './UI/Body'
-=======
 import './styles/bootstrap.min.css';
 import './styles/styles.css';
 
@@ -18,17 +12,9 @@ import {
   createBrowserRouter,
   RouterProvider,
 } from "react-router-dom";
->>>>>>> a3bf512b326d1f89ed7891f11689fe6be74297cf
 
-
-<<<<<<< HEAD
 function App() {
-  return (
-    <div>
-      <Title/>
-      <Body/>
 
-=======
   const user = (
     {
       id: 1,
@@ -77,7 +63,6 @@ function App() {
         <Registration />
         <Lk user={user} />
       </div> */}
->>>>>>> a3bf512b326d1f89ed7891f11689fe6be74297cf
     </div>
   );
 }

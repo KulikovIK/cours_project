@@ -62,6 +62,10 @@ h3, h5 {
     color: #2a475e;
 }
 
+.nav-link:hover {
+    background-color: #2a475e;
+    color: #f8f7fb;
+}
 
 
 .service-img {

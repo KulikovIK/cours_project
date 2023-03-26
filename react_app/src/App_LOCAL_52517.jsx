@@ -1,0 +1,17 @@
+import './styles/bootstrap.min.css'
+import './styles/styles.css'
+import Title from './UI/Title'
+import Body from './UI/Body'
+
+
+function App() {
+  return (
+    <div>
+      <Title/>
+      <Body/>
+
+    </div>
+  );
+}
+
+export default App;
