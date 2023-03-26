@@ -1,7 +1,7 @@
 import React from "react";
 import { RowTwoValues } from "../UI/rows/RowTwoValues";
 
-export const Lk = ({ user }) => {
+const Lk = ({ user }) => {
     const elements = [
         [
             {
@@ -57,3 +57,5 @@ export const Lk = ({ user }) => {
         </div>
     );
 };
+
+export default Lk;
