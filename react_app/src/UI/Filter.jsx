@@ -1,5 +1,5 @@
 import React from "react"
-import { Button } from "../components/Button";
+import { Button } from "./button/Button";
 import Rudiobutton from "./Rudiobutton"
 
 function Title() {
@@ -12,7 +12,7 @@ function Title() {
                 <div className="col">
                     <Rudiobutton value='Python'/>
                     <Rudiobutton value='JavaScript'/>
-                    <Button params={{text:"Фильтровать", type:"submit", styles:"mainButton"}}/>
+                    <Button text="Фильтровать" type="submit" styles="mainButton"/>
                 </div>
             </form>
 
