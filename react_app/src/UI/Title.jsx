@@ -1,5 +1,5 @@
 import React from "react"
-import { Button } from "../components/Button"
+import { Button } from "./button/Button"
 
 function Title() {
 
@@ -34,14 +34,14 @@ function Title() {
 
             <form className="d-flex">
                 <input className="form-control mr-2" type="search" placeholder="Search" aria-label="Search"></input>
-                <Button params={{text:"Поиск", type:"submit", styles:"mainButton"}}/>
+                <Button text="Поиск" type="submit" styles="mainButton"/>
             </form>
 
-            <Button params={{text:"Войти в систему", type:"button", styles:"mainButton"}}/>
+            <Button text="Войти в систему" type="button" styles="mainButton"/>
 
         </div>
         </nav>
         )
     }
 
-export default Title
+export default Title;
