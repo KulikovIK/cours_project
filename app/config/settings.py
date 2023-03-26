@@ -10,13 +10,17 @@ AUTH_USER_MODEL = 'authapp.BaseIdeinerUser'
 
 DEBUG = True
 
-if not DEBUG:
-    REST_FRAMEWORK = {
-        'DEFAULT_RENDERER_CLASSES': (
-            'rest_framework.renderers.JSONRenderer',
-        )
-    }
-else:
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': ('rest_framework_simplejwt.authentication.JWTAuthentication',),
+    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'],
+    # 'DEFAULT_PERMISSION_CLASSES': ['rest_framework.permissions.AllowAny'],  # IsAuthenticated, AllowAny
+    # 'DEFAULT_RENDERER_CLASSES': ('rest_framework.renderers.JSONRenderer'),
+}
+
+
+
+if DEBUG:
     CORS_ALLOWED_ORIGINS = [
         'http://localhost:3000',
     ]
@@ -25,7 +29,7 @@ else:
 
 ALLOWED_HOSTS = ['*']
 LOGOUT_REDIRECT_URL = '/'
-# LOGIN_URL = '/'
+
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -39,6 +43,9 @@ INSTALLED_APPS = [
     'frontend',
     'rest_framework',
     'corsheaders', # удалить на проде CORS
+    'rest_framework.authtoken',
+    'rest_framework_simplejwt',
+
 ]
 
 MIDDLEWARE = [

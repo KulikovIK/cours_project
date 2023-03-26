@@ -1,15 +1,16 @@
 import React from "react";
 
+const Idea = (props) => { 
+    console.log('title')
+    console.log(props.title)
 
-function Idea(props) {
-    
     return (
+
         <div className="card mb-3" style={{minWidth: '380px', minHeight: '166px'}}>
-                        <div className="card-body">
+            <div className="card-body">
+                <div className="row g-3 justify-content-left">
 
-                            <div className="row g-3 justify-content-left">
-
-                                <div className="col-sm-2 card-image d-none d-md-block my-auto">Card title</div>
+                    <div className="col-sm-2 card-image d-none d-md-block my-auto">Card title</div>
 
                                 <div className="col" style={{minWidth: "340px"}}>
 
@@ -21,7 +22,7 @@ function Idea(props) {
                                         <div className="row g-1">
 
                                             <div className="col-4 my-auto">
-                                                <a className="nameLink" href="#">Frank Chapman</a>
+                                                <a className="nameLink" href="#">{props.i}</a>
                                             </div>
 
                                             <div className="col my-auto">
@@ -74,6 +75,7 @@ function Idea(props) {
                             </div>
                         </div>
                     </div>
+
     )
 }
 

@@ -1,16 +1,15 @@
-import ListIdeas from './UI/ListIdeas';
-
 import './styles/bootstrap.min.css'
 import './styles/styles.css'
 import Title from './UI/Title'
 import Body from './UI/Body'
 
-function App() {
 
+function App() {
   return (
     <div>
       <Title/>
       <Body/>
+
     </div>
   );
 }
