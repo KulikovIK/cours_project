@@ -1,19 +1,24 @@
-import ListIdeas from './UI/ListIdeas';
+import './styles/bootstrap.min.css';
+import './styles/styles.css';
 
-import './styles/bootstrap.min.css'
-import './styles/styles.css'
-import Title from './UI/Title'
-import Body from './UI/Body'
-import { Registration } from './components/Registration';
-import { Lk } from './components/Lk';
-import { useState } from 'react';
+import ListIdeas from './UI/ListIdeas';
+import Title from './UI/Title';
+// import Body from './UI/Body';
+import Lk from './components/Lk';
+import ErrorPage from './components/ErrorPage';
+import Registration from './components/Registration';
+
+import {
+  createBrowserRouter,
+  RouterProvider,
+} from "react-router-dom";
 
 function App() {
 
-  const [user, setUser] = useState(
+  const user = (
     {
-      id:1,
-      age:18,
+      id: 1,
+      age: 18,
       nickname: "UralFox",
       email: "admin@zadolbal.net",
       username: "Илья",
@@ -26,12 +31,38 @@ function App() {
     }
   );
 
+  const router = createBrowserRouter([
+    {
+      path: "/",
+      element: <Title />,
+      errorElement: <ErrorPage />,
+      children: [
+        {
+          path: "/",
+          element: <ListIdeas />,
+        },
+        {
+          path: "lk/",
+          element: <Lk user={user} />,
+        },
+        {
+          path: "register/",
+          element: <Registration />,
+        },
+      ]
+    },
+  ]);
+
   return (
     <div>
-      <Title/>
-      <Body/>
-      {/* <Registration/> 
-      <Lk user={user}/> */}
+      <RouterProvider router={router} />
+      {/* <div>
+        <Title /> 
+        <Title user={user} />
+        <Body />
+        <Registration />
+        <Lk user={user} />
+      </div> */}
     </div>
   );
 }
