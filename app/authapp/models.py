@@ -1,11 +1,12 @@
 import uuid
 
-from django.contrib.auth.models import AbstractUser, AbstractBaseUser, BaseUserManager, PermissionsMixin
+from django.contrib.auth.models import  AbstractBaseUser, BaseUserManager, PermissionsMixin
 from django.db import models
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import Http404
-from django.contrib.auth.validators import UnicodeUsernameValidator, ASCIIUsernameValidator
+from django.contrib.auth.validators import UnicodeUsernameValidator
 
+from backend import models as back_models
 
 # " все картинки загружаются в папку users_avatars. она создаётся авытоматически, но можно её переместить в другую папку, " \
 # " например, в static/img, но тогда надо переписать путь:" \
@@ -56,7 +57,6 @@ class BaseIdeinerUser(AbstractBaseUser, PermissionsMixin):
 
     public_id = models.UUIDField(db_index=True, unique=True, default=uuid.uuid4, editable=False)
     age = models.PositiveIntegerField(verbose_name="возраст", default=18)
-    # nickname = models.CharField(verbose_name="ник", max_length=40, default="")  # не используется
     email = models.CharField(verbose_name="email", max_length=40, default="", unique=True)
     username = models.CharField(validators=[username_validator], verbose_name="логин", max_length=40, unique=True, default="")
     surname = models.CharField(verbose_name="фамилия", max_length=40, default="")
@@ -65,8 +65,22 @@ class BaseIdeinerUser(AbstractBaseUser, PermissionsMixin):
     password = models.CharField(verbose_name="password", max_length=40, default="")
     registrationdate = models.DateTimeField(auto_now_add=True)
     is_active = models.BooleanField(default=True)
-    # is_staff = models.BooleanField(default=True) # по ответу Бориса удалить если не используется пока нигде не применен
     is_superuser = models.BooleanField(default=False)
+    posts_liked = models.ManyToManyField(back_models.Idea, related_name="liked_by")
+
+    def like(self, post):
+        """Лайкнуть не лайкнутую идею"""
+        return self.posts_liked.add(post)
+    
+    def remove_like(self, post):
+        """Убрать лайк от идеи"""
+        return self.posts_liked.remove(post)
+    
+    def has_liked(self, post):
+        """Проверка лайкнута ли пользователем идея"""
+        return self.posts_liked.filter(pk=post.pk).exists()
+
+
 
     def __str__(self):
         return f"{self.username} ({self.password})"
@@ -80,5 +94,7 @@ class BaseIdeinerUser(AbstractBaseUser, PermissionsMixin):
         return f"{self.username} {self.surname}"
     
     objects = UserManager()
+
+
 
 

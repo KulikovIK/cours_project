@@ -1,23 +1,33 @@
-import React from "react"
+import React, { useEffect, useState } from "react"
 import { Button } from "./button/Button";
 import Rudiobutton from "./Rudiobutton"
 
-function Title() {
+function Filter(props) {
 
+    const [filreres, setFilteres] = useState([])
+
+    useEffect(() => {
+        let arr = props.val.reduce((result, item) => {
+            return result.includes(item) ? result : [... result, item];}, []);
+        console.log(arr)
+        setFilteres(arr)
+    
+    }, [setFilteres])
+
+        
     return (
-
+        
         <div className="col-md-3 d-none d-md-block">
             <h3>Фильтр</h3>
-            <form className="row g-3">
+            {/* <form className="row g-3">
                 <div className="col">
-                    <Rudiobutton value='Python'/>
-                    <Rudiobutton value='JavaScript'/>
+                    {filreres.map(fl => (<Rudiobutton value={fl}/>))}
                     <Button text="Фильтровать" type="submit" styles="mainButton"/>
                 </div>
-            </form>
+            </form> */}
 
         </div>
         )
-    }
-
-export default Title;
+    
+}
+export default Filter;

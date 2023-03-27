@@ -3,7 +3,7 @@ from authapp.models import BaseIdeinerUser
 
 from rest_framework import viewsets
 from rest_framework import permissions
-from frontend.serializers import IdeaSerializer, RegisterSerializer, UserSerializer, IssueTokenRequestSerializer, TokenSeriazliser
+from frontend.serializers import IdeaSerializer, FeedbackSerializer, RegisterSerializer, UserSerializer, IssueTokenRequestSerializer, TokenSeriazliser
 from rest_framework.authentication import SessionAuthentication, BasicAuthentication
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.response import Response
@@ -36,10 +36,12 @@ from rest_framework.permissions import AllowAny
 from rest_framework import status
 from rest_framework import viewsets
 from rest_framework_simplejwt.exceptions import TokenError, InvalidToken
+from rest_framework.decorators import action
+from django.http import Http404
 
 class UserViewSet(viewsets.ModelViewSet):
     http_method_names = ('patch', 'get')
-    permission_classes = (IsAuthenticated,) # AllowAny
+    permission_classes = (AllowAny,) #  IsAuthenticated вернуть после тестироваиня
     serializer_class = UserSerializer
 
     def get_queryset(self):
@@ -100,30 +102,95 @@ class RegisterViewSet(viewsets.ViewSet):
             status=status.HTTP_201_CREATED)
 
 
-
-
+from rest_framework.permissions import BasePermission, SAFE_METHODS
+class UserPermission(BasePermission):
+    def has_object_permission(self, request, view, obj):
+        if request.user.is_anonymous:
+            return request.method in SAFE_METHODS
+        if view.basename in ["post"]:
+            return bool(request.user and request.user.is_authenticated)
+        return False
+    
+    def has_permission(self, request, view):
+        if view.basename in ["post"]:
+            if request.user.is_anonymous:
+                return request.method in SAFE_METHODS
+            return bool(request.user and request.user.is_authenticated)
+        return False
 
 
 
 
 
 class IdeaViewSet(viewsets.ModelViewSet):
-    http_method_names = ('patch', 'get')
+    http_method_names = ('post', 'get', 'put', 'delete')  # ('patch', 'get')
     permission_classes = (permissions.AllowAny,) # IsAuthenticated
     # queryset = models.Idea.objects.all()
     serializer_class = IdeaSerializer
 
-    def get_queryset(self):  # получаем все
-        return models.Idea.objects.all()
+    def get_queryset(self):  
+        return models.Idea.objects.all() # получаем все временно
         # if self.request.user.is_superuser:
         #     return models.Idea.objects.all()
         # return models.Idea.objects.exclude(is_superuser=True)
     
     def get_object(self):  # получаем один экземпляр
         obj = models.Idea.objects.get_object_by_public_id(self.kwargs['pk'])
+        # self.check_object_permissions(self.request, obj)
+        return obj
+    
+    def update(self, instance, validated_data):
+        if not instance.edited:
+            validated_data['edited'] = True
+            instance = super().update(instance, validated_data)
+            return instance
+        
+    @action(methods=['post'], detail=True)
+    def like(self, request, *args, **kwargs):
+        post = self.get_object()
+        user = self.request.user
+        user.like(post)
+        serializer = self.serializer_class(post)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    @action(methods=['post'], detail=True)
+    def remove_like(self, request, *args, **kwargs):
+        post = self.get_object()
+        user = self.request.user
+        user.remove_like(post)
+        serializer = self.serializer_class(post)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    
+
+class FeedbackViewSet(viewsets.ModelViewSet):
+    http_method_names = ('post', 'get', 'put', 'delete')
+    permission_classes = (AllowAny,)  # UserPermission
+    serializer_class = FeedbackSerializer
+
+    def get_queryset(self):
+        if self.request.user.is_superuser: # временно для тестирования
+            return models.Feedback.objects.all()
+        post_pk = self.kwargs['post_pk']
+        if post_pk is None:
+            return Http404
+        queryset = models.Feedback.objects.filter(post__public_id=post_pk)
+        return queryset
+    
+    def get_object(self):
+        obj = models.Feedback.objects.get_object_by_public_id(self.kwargs['pk'])
         self.check_object_permissions(self.request, obj)
         return obj
+    
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
 
+    def validate_post(self, value):
+        if self.instance:
+            return self.instance.post
+        return value
 
 class JoinedUsersViewSet(viewsets.ModelViewSet):
     queryset = models.JoinedUsers.objects.all()

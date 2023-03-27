@@ -16,13 +16,13 @@ const Idea = (props) => {
 
                                     <div className="container">
                                         <div className="row justify-content-center align-items-center g-2">
-                                            <h4 className="card-title text-center"><strong>Идея - 1</strong></h4>
+                                            <h4 className="card-title text-center"><strong>{props.title}</strong></h4>
                                         </div>
 
                                         <div className="row g-1">
 
                                             <div className="col-4 my-auto">
-                                                <a className="nameLink" href="#">{props.i}</a>
+                                                <a className="nameLink" href="#">{props.created_at}</a>
                                             </div>
 
                                             <div className="col my-auto">
@@ -39,12 +39,9 @@ const Idea = (props) => {
                                             <div className="row justify-content-center align-items-center g-2">
                                                 <div className="col">
                                                     <p className="card-text">Описание</p>
-                                                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam
-                                                        explicabo minus labore fugit dolorem! Repellat molestiae neque
-                                                        voluptas nostrum nam.</p>
+                                                    <p>{props.preview}</p>
                                                     <p className="card-text">
-                                                        <small className="text-muted">Опубликовано 32 мартабря 2522
-                                                            года</small>
+                                                        <small className="text-muted">Опубликовано: {props.created_at}</small>
                                                     </p>
                                                 </div>
                                             </div>

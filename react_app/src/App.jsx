@@ -1,13 +1,7 @@
-<<<<<<< HEAD
-import './styles/bootstrap.min.css'
-import './styles/styles.css'
-import Title from './UI/Title'
-import Body from './UI/Body'
-=======
 import './styles/bootstrap.min.css';
 import './styles/styles.css';
 
-import ListIdeas from './UI/ListIdeas';
+import Main from './UI/Main';
 import Title from './UI/Title';
 // import Body from './UI/Body';
 import Lk from './components/Lk';
@@ -18,17 +12,9 @@ import {
   createBrowserRouter,
   RouterProvider,
 } from "react-router-dom";
->>>>>>> a3bf512b326d1f89ed7891f11689fe6be74297cf
 
-
-<<<<<<< HEAD
 function App() {
-  return (
-    <div>
-      <Title/>
-      <Body/>
 
-=======
   const user = (
     {
       id: 1,
@@ -49,11 +35,11 @@ function App() {
     {
       path: "/",
       element: <Title />,
-      errorElement: <ErrorPage />,
+      // errorElement: <ErrorPage />, // временно для тестирования
       children: [
         {
           path: "/",
-          element: <ListIdeas />,
+          element: <Main />,
         },
         {
           path: "lk/",
@@ -70,14 +56,6 @@ function App() {
   return (
     <div>
       <RouterProvider router={router} />
-      {/* <div>
-        <Title /> 
-        <Title user={user} />
-        <Body />
-        <Registration />
-        <Lk user={user} />
-      </div> */}
->>>>>>> a3bf512b326d1f89ed7891f11689fe6be74297cf
     </div>
   );
 }
