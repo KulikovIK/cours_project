@@ -1,8 +1,8 @@
 import React from "react";
 
-export const Button = ({type, text, styles}) => {
+export const Button = ({type, text, styles, action}) => {
     return (
-        <button type={type} className={["btn", styles].join(' ')} data-bs-toggle="modal" data-bs-target="#exampleModal">
+        <button type={type} className={["btn", styles].join(' ')} onClick={action}>
             {text}
         </button>
     );

@@ -12,9 +12,10 @@ import {
   createBrowserRouter,
   RouterProvider,
 } from "react-router-dom";
+import useModal from './services/castomHooks/useModal';
 
 function App() {
-
+  const [isVisable, togleVisable] = useModal()
   const user = (
     {
       id: 1,
@@ -34,7 +35,7 @@ function App() {
   const router = createBrowserRouter([
     {
       path: "/",
-      element: <Title />,
+      element: <Title isVisable={isVisable} togleVisable={togleVisable}/>,
       // errorElement: <ErrorPage />, // временно для тестирования
       children: [
         {
@@ -55,7 +56,7 @@ function App() {
 
   return (
     <div>
-      <RouterProvider router={router} />
+      <RouterProvider router={router} /> 
     </div>
   );
 }
