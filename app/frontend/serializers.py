@@ -127,6 +127,13 @@ class FeedbackSerializer(AbstractSerializer):
     read_only_fields = ["edited"]
 
 
+    def update(self, instance, validated_data):
+        if not instance.edited:
+            validated_data['edited'] = True
+        instance = super().update(instance,  validated_data)
+        return instance
+
+
 class JoinedUsersSerializer(AbstractSerializer):
     class Meta:
         model = models.JoinedUsers

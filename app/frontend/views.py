@@ -41,7 +41,7 @@ from django.http import Http404
 
 class UserViewSet(viewsets.ModelViewSet):
     http_method_names = ('patch', 'get')
-    permission_classes = (AllowAny,) #  IsAuthenticated вернуть после тестироваиня
+    permission_classes = (IsAuthenticated,) #  IsAuthenticated вернуть после тестироваиня
     serializer_class = UserSerializer
 
     def get_queryset(self):
@@ -124,7 +124,7 @@ class UserPermission(BasePermission):
 
 class IdeaViewSet(viewsets.ModelViewSet):
     http_method_names = ('post', 'get', 'put', 'delete')  # ('patch', 'get')
-    permission_classes = (permissions.AllowAny,) # IsAuthenticated
+    permission_classes = (permissions.IsAuthenticated,) # IsAuthenticated AllowAny
     # queryset = models.Idea.objects.all()
     serializer_class = IdeaSerializer
 
