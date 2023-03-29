@@ -113,12 +113,12 @@
     <script>
 
         // отзывы
-
+        
         let feedback_button = document.getElementsByClassName("feedback")
         for (let i = 0; i < feedback_button.length; i++){
             feedback_button[i].onclick = function(el){
                 let feedback_form = feedback_button[i].parentNode.parentNode.parentNode.parentNode.
-                parentNode.parentNode.parentNode.childNodes[3]
+                parentNode.parentNode.parentNode.childNodes[1].childNodes[9]
 
                 console.log(feedback_form)
 
