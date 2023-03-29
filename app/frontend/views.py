@@ -124,7 +124,7 @@ class UserPermission(BasePermission):
 
 class IdeaViewSet(viewsets.ModelViewSet):
     http_method_names = ('post', 'get', 'put', 'delete')  # ('patch', 'get')
-    permission_classes = (permissions.IsAuthenticated,) # IsAuthenticated AllowAny
+    permission_classes = (permissions.AllowAny,) # IsAuthenticated AllowAny
     # queryset = models.Idea.objects.all()
     serializer_class = IdeaSerializer
 

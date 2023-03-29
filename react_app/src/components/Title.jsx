@@ -3,8 +3,16 @@ import { Button } from "./UI/button/Button"
 import { Link, Outlet } from "react-router-dom";
 import Modal from "./UI/modal/Modal";
 import LogIn from "./LogIn";
+import { useNavigate } from "react-router-dom";
 
 function Title({isVisable, togleVisable}) {
+    const navigate = useNavigate();
+
+    function logout() {
+        localStorage.removeItem("auth");
+        navigate("/");
+    }
+
     return (
         <>
             <div className="container-md site-container">
@@ -21,7 +29,7 @@ function Title({isVisable, togleVisable}) {
                                 <Link to="register/" className="nav-link">Регистрация</Link>
                             </li>
                             <li className="nav-item">
-                                <a className="nav-link disabled" href="#" tabIndex="-1" aria-disabled="true">Выход</a>
+                                <a className="nav-link" onClick={logout} href="/" tabIndex="-1" aria-disabled="true">Выход</a>
                             </li>
                         </ul>
 

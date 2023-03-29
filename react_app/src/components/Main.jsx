@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from "react"
 import Filter from './Filter'
 import Idea from "./Idea";
-import { getIdeas } from "../API/PostService";
+import axios from "axios";
 
 
 function Main() {
     const [ideas, setIdeas] = useState([])
 
     useEffect(() => {
-        const resa = getIdeas()
-        resa.then( res => {
-            setIdeas(res)
+        const ideas = axios.get('http://127.0.0.1:8000/api/ideas/')
+        ideas.then( res => {
+            setIdeas(res.data.results)
         })
         .catch(err => {
             console.log(err)}
