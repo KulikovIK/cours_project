@@ -31,9 +31,9 @@ class DataTimeModel(models.Model):
     objects = AbstractManager()
     public_id = models.UUIDField(db_index=True, unique=True,
     default=uuid.uuid4, editable=False)
-    created_at = models.DateTimeField(verbose_name='Дата создания',
+    created = models.DateTimeField(verbose_name='Дата создания',
                                       auto_now_add=True, editable=False)
-    updated_at = models.DateTimeField(verbose_name='Дата изменения',
+    updated = models.DateTimeField(verbose_name='Дата изменения',
                                       auto_now=True, editable=False)
     deleted = models.BooleanField(verbose_name='Запись удалена', default=False)
 
@@ -43,7 +43,7 @@ class DataTimeModel(models.Model):
 
     class Meta:
         # '-' говорит об обратной сортировке
-        ordering = ('-created_at',)
+        ordering = ('-created',)
         # важный флаг для исключения дублирования
         abstract = True
 

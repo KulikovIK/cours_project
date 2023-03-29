@@ -38,8 +38,17 @@ from rest_framework import viewsets
 from rest_framework_simplejwt.exceptions import TokenError, InvalidToken
 from rest_framework.decorators import action
 from django.http import Http404
+from rest_framework.permissions import BasePermission, SAFE_METHODS
+from rest_framework import mixins
+from rest_framework import viewsets
+from rest_framework import filters
 
-class UserViewSet(viewsets.ModelViewSet):
+class AbstractViewSet(viewsets.ModelViewSet):
+    filter_backends = [filters.OrderingFilter]
+    ordering_fields = ['updated', 'created']
+    ordering = ['-updated']
+
+class UserViewSet(AbstractViewSet):
     http_method_names = ('patch', 'get')
     permission_classes = (AllowAny,) #  IsAuthenticated вернуть после тестироваиня
     serializer_class = UserSerializer
@@ -102,7 +111,7 @@ class RegisterViewSet(viewsets.ViewSet):
             status=status.HTTP_201_CREATED)
 
 
-from rest_framework.permissions import BasePermission, SAFE_METHODS
+
 class UserPermission(BasePermission):
     def has_object_permission(self, request, view, obj):
         if request.user.is_anonymous:
@@ -122,7 +131,7 @@ class UserPermission(BasePermission):
 
 
 
-class IdeaViewSet(viewsets.ModelViewSet):
+class IdeaViewSet(AbstractViewSet):
     http_method_names = ('post', 'get', 'put', 'delete')  # ('patch', 'get')
     permission_classes = (permissions.AllowAny,) # IsAuthenticated AllowAny
     # queryset = models.Idea.objects.all()
@@ -162,19 +171,22 @@ class IdeaViewSet(viewsets.ModelViewSet):
         return Response(serializer.data, status=status.HTTP_200_OK)
     
 
-class FeedbackViewSet(viewsets.ModelViewSet):
+class FeedbackViewSet(AbstractViewSet):
     http_method_names = ('post', 'get', 'put', 'delete')
     permission_classes = (AllowAny,)  # UserPermission
     serializer_class = FeedbackSerializer
 
     def get_queryset(self):
-        if self.request.user.is_superuser: # временно для тестирования
-            return models.Feedback.objects.all()
-        post_pk = self.kwargs['post_pk']
-        if post_pk is None:
-            return Http404
-        queryset = models.Feedback.objects.filter(post__public_id=post_pk)
-        return queryset
+        return models.Feedback.objects.all()  # временно
+        # if self.request.user.is_superuser: 
+        #     return models.Feedback.objects.all()
+        # print('self.kwargs')
+        # print(self.kwargs)
+        # idea_pk = self.kwargs['idea_pk']
+        # if idea_pk is None:
+        #     return Http404
+        # queryset = models.Feedback.objects.filter(post__public_id=idea_pk)
+        # return queryset
     
     def get_object(self):
         obj = models.Feedback.objects.get_object_by_public_id(self.kwargs['pk'])
@@ -192,12 +204,12 @@ class FeedbackViewSet(viewsets.ModelViewSet):
             return self.instance.post
         return value
 
-class JoinedUsersViewSet(viewsets.ModelViewSet):
+class JoinedUsersViewSet(AbstractViewSet):
     queryset = models.JoinedUsers.objects.all()
     serializer_class = IdeaSerializer
     # permission_classes = [permissions.IsAuthenticated]
 
-class LikesViewSet(viewsets.ModelViewSet):
+class LikesViewSet(AbstractViewSet):
     queryset = models.LikesToIdeas.objects.all()
     serializer_class = IdeaSerializer
     # permission_classes = [permissions.IsAuthenticated]

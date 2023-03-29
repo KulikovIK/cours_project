@@ -8,6 +8,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework import serializers
 from rest_framework import status
+from rest_framework.exceptions import ValidationError
 
 from backend import models
 from authapp.models import BaseIdeinerUser
@@ -19,6 +20,8 @@ class AbstractSerializer(serializers.ModelSerializer):
     id = serializers.UUIDField(source='public_id', read_only=True, format='hex')
     created = serializers.DateTimeField(read_only=True)
     updated = serializers.DateTimeField(read_only=True)
+
+
 
     class Meta:
         abstract = True
@@ -75,13 +78,14 @@ class RegisterSerializer(UserSerializer):
 
 # сериализаторы основных таблиц
 
+
 class IdeaSerializer(AbstractSerializer):
     liked = serializers.SerializerMethodField()
     likes_count = serializers.SerializerMethodField()
 
     class Meta:
         model = models.Idea
-        fields = ['autor', 'title', 'rubrics', 'created_at', 'preview', 'body', 'liked', 'likes_count', 'created', 'updated']
+        fields = ['autor', 'title', 'rubrics', 'created', 'preview', 'body', 'liked', 'likes_count', 'created', 'updated']
         read_only_fields = ["edited"]
 
     def get_queryset(self):
@@ -93,7 +97,11 @@ class IdeaSerializer(AbstractSerializer):
         return obj
 
     def create(self, request, *args, **kwargs):
-        serializer = self.get_serializer(data=request.data)
+        print('request.data')
+        print(request)
+        serializer = self.get_serializer(data=request.data) # data=request.data т.к передаю не полноценный запрос
+        
+        print('request.data error')
         serializer.is_valid(raise_exception=True)
         self.perform_create(serializer)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -110,8 +118,7 @@ class IdeaSerializer(AbstractSerializer):
 
 class FeedbackSerializer(AbstractSerializer):
     author = serializers.SlugRelatedField(queryset=BaseIdeinerUser.objects.all(), slug_field='public_id')
-    post = serializers.SlugRelatedField(
-    queryset = models.Idea.objects.all(), slug_field='public_id')
+    idea = serializers.SlugRelatedField(queryset = models.Idea.objects.all(), slug_field='public_id')
     
     def to_representation(self, instance):
         rep = super().to_representation(instance)
@@ -121,10 +128,14 @@ class FeedbackSerializer(AbstractSerializer):
     
     class Meta:
         model = models.Feedback
-    # List of all the fields that can be included in a
-    # request or a response
-    fields = ['id', 'idea', 'rating', 'feedback', 'edited',  'created', 'updated']
-    read_only_fields = ["edited"]
+        fields = ['id', 'author', 'idea', 'rating', 'feedback', 'created', 'updated']
+        read_only_fields = ["edited"]
+
+    def validate_author(self, value):
+        if self.context["request"].user != value:
+            raise ValidationError("вы не можете создать пост за другого пользователя")
+        return value
+
 
 
     def update(self, instance, validated_data):

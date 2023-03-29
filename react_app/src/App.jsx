@@ -9,6 +9,8 @@ import ErrorPage from './components/ErrorPage';
 import Registration from './components/Registration';
 import LogIn from './components/LogIn';
 // import ProtectedRoute from './API/ProtectedRoute';
+import NewIdea from './components/NewIdea';
+
 
 import {
   createBrowserRouter,
@@ -55,6 +57,10 @@ function App() {
         {
           path: "login/",
           element: <LogIn />,
+        },
+        {
+          path: "new/",
+          element: <NewIdea />,
         },
       ]
     },

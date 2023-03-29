@@ -67,6 +67,8 @@ class BaseIdeinerUser(AbstractBaseUser, PermissionsMixin):
     is_active = models.BooleanField(default=True)
     is_superuser = models.BooleanField(default=False)
     posts_liked = models.ManyToManyField(back_models.Idea, related_name="liked_by")
+    created = models.DateTimeField(auto_now=True)
+    updated = models.DateTimeField(auto_now_add=True)
 
     def like(self, post):
         """Лайкнуть не лайкнутую идею"""

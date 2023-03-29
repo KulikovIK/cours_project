@@ -1,8 +1,6 @@
 import React from "react";
 
 const Idea = (props) => { 
-    console.log('title')
-    console.log(props.title)
 
     return (
 
