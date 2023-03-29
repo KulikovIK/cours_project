@@ -176,10 +176,11 @@ def idea_card(request, pk): # карта идеи
 def idea_card_delete(request, pk):  # удаление идеи при нажатии на кнопку
 
     title = "Идеи"
-    ideas = GenIdeasList(Idea.objects.all())
 
     idea = Idea.objects.filter(pk=pk)
     idea.delete()
+
+    ideas = GenIdeasList(Idea.objects.all())
 
     content = {"title": title, "ideas": ideas, "media_url": settings.MEDIA_URL}
     return render(request, "backend/index.html", content)
