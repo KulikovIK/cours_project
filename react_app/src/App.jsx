@@ -1,12 +1,14 @@
 import './styles/bootstrap.min.css';
 import './styles/styles.css';
 
-import Main from './UI/Main';
-import Title from './UI/Title';
+import Main from './components/Main';
+import Title from './components/Title'
 // import Body from './UI/Body';
 import Lk from './components/Lk';
 import ErrorPage from './components/ErrorPage';
 import Registration from './components/Registration';
+import LogIn from './components/LogIn';
+// import ProtectedRoute from './API/ProtectedRoute';
 
 import {
   createBrowserRouter,
@@ -50,13 +52,19 @@ function App() {
           path: "register/",
           element: <Registration />,
         },
+        {
+          path: "login/",
+          element: <LogIn />,
+        },
       ]
     },
   ]);
 
   return (
     <div>
-      <RouterProvider router={router} /> 
+      {/* <ProtectedRoute> */} 
+        <RouterProvider router={router} /> 
+      {/* </ProtectedRoute> */}
     </div>
   );
 }

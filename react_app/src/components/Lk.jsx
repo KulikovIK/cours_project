@@ -1,5 +1,5 @@
 import React from "react";
-import { RowTwoValues } from "../UI/rows/RowTwoValues";
+import { RowTwoValues } from "./UI/rows/RowTwoValues";
 
 const Lk = ({ user }) => {
     const elements = [

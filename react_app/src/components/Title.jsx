@@ -1,8 +1,8 @@
 import React from "react"
-import { Button } from "./button/Button"
+import { Button } from "./UI/button/Button"
 import { Link, Outlet } from "react-router-dom";
-import Modal from "./modal/Modal";
-import LogIn from "../components/LogIn";
+import Modal from "./UI/modal/Modal";
+import LogIn from "./LogIn";
 
 function Title({isVisable, togleVisable}) {
     return (
