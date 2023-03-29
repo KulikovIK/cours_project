@@ -10,7 +10,6 @@ from django.db import models
 
 class BaseIdeinerUser(AbstractUser):
     age = models.PositiveIntegerField(verbose_name="возраст", default=18)
-    nickname = models.CharField(verbose_name="ник", max_length=40, default="")
     email = models.CharField(verbose_name="email", max_length=40, default="")
     username = models.CharField(verbose_name="username", max_length=40, unique=True, default="")
     surname = models.CharField(verbose_name="surname", max_length=40, default="")

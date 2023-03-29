@@ -122,7 +122,7 @@ def search(request):
 @user_passes_test(lambda u: u.is_authenticated)
 def my_ideas(request):
     title = "Мои идели"
-    autor = request.user.username
+    autor = request.user.surname
 
     ideas = GenIdeasList(Idea.objects.filter(autor=autor))
 
@@ -135,7 +135,7 @@ def my_ideas(request):
 def idea_add(request):  # добавление идеи через форму
 
     if request.method == 'POST':
-        username = request.user.username
+        username = request.user.surname
 
         title = request.POST['title']
         preview = request.POST['preview']
@@ -275,7 +275,10 @@ def feedback_delete(request, pk):  # удаление отзыва при наж
 def joined_user_add(request, pk):  # добавление пользователя в проект через форму
 
     idea = Idea.objects.filter(pk=pk).first()
-    autor = request.user.nickname
+    autor = request.user.surname
+
+    if JoinedUsers.objects.filter(idea=idea, autor=autor):
+        return HttpResponseRedirect(request.META.get("HTTP_REFERER"))
 
     new_joined_user = JoinedUsers.objects.create(idea=idea, autor=autor)
     new_joined_user.save()
@@ -286,7 +289,7 @@ def joined_user_add(request, pk):  # добавление пользовател
 def joined_user_delete(request, pk):  # удаление пользователя из проекта при нажатии на кнопку
 
     idea = Feedback.objects.filter(pk=pk).first()
-    autor = request.user.username
+    autor = request.user.surname
 
     joined_user = JoinedUsers.objects.filter(idea=idea, autor=autor).first()
     joined_user.delete()
