@@ -163,7 +163,6 @@ def idea_card(request, pk): # карта идеи
     feedbacks = Feedback.objects.filter(idea=idea)
     joined_users = JoinedUsers.objects.filter(idea=idea)
     likes = LikesToIdeas.objects.filter(idea=idea)
-    print(pk, idea, Idea.objects.all())
 
     content = {"title": title, "idea": idea, "feedbacks": feedbacks, "joined_users": joined_users, 
                "likes": likes, "media_url": settings.MEDIA_URL}
